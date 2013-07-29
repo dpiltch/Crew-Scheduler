@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   helper :boats, :teams
-  
+
   def index
     list
     render :action => 'list'
@@ -31,25 +31,20 @@ class EventsController < ApplicationController
     @event.team = @current_team
     @event.event_on = Date.today + 7.days
     @event.start_time = Time.now + 7.days
-    @tides = Tide.find :all, :conditions=> [ "day >= ?", @event.event_on - 2.day ], :limit => 5
-    @event.start_time = @tides[2].sunrise if (@tides[2].sunrise > @event.start_time)
+    @event.start_time = Time.now + 1.day
     @event.end_time = @event.start_time + 1.hour
-    if (@event.end_time > @tides[2].sunset)
-      @event.start_time = @tides[2].sunset - 1.hour
-      @event.end_time = @event.start_time + 1.hour
-    end
   end
 
   def create
     # set start and end times correctly
-    params[:event]["start_time(1i)"] = params[:event]["event_on(1i)"]  
+    params[:event]["start_time(1i)"] = params[:event]["event_on(1i)"]
     params[:event]["start_time(2i)"] = params[:event]["event_on(2i)"]
     params[:event]["start_time(3i)"] = params[:event]["event_on(3i)"]
-    
-    params[:event]["end_time(1i)"] = params[:event]["event_on(1i)"]  
+
+    params[:event]["end_time(1i)"] = params[:event]["event_on(1i)"]
     params[:event]["end_time(2i)"] = params[:event]["event_on(2i)"]
     params[:event]["end_time(3i)"] = params[:event]["event_on(3i)"]
-    
+
     @event = Event.new(params[:event])
     # create the seating positions
     SeatingPosition.init(@event) unless @event.boat.nil?
@@ -71,14 +66,14 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
       # set start and end times correctly
-    params[:event]["start_time(1i)"] = params[:event]["event_on(1i)"]  
+    params[:event]["start_time(1i)"] = params[:event]["event_on(1i)"]
     params[:event]["start_time(2i)"] = params[:event]["event_on(2i)"]
     params[:event]["start_time(3i)"] = params[:event]["event_on(3i)"]
-    
-    params[:event]["end_time(1i)"] = params[:event]["event_on(1i)"]  
+
+    params[:event]["end_time(1i)"] = params[:event]["event_on(1i)"]
     params[:event]["end_time(2i)"] = params[:event]["event_on(2i)"]
     params[:event]["end_time(3i)"] = params[:event]["event_on(3i)"]
-    
+
     if @event.update_attributes(params[:event])
       flash[:notice] = 'Rowing time was successfully updated.'
       redirect_to :action => 'show', :id => @event
@@ -91,7 +86,7 @@ class EventsController < ApplicationController
     Event.find(params[:id]).destroy
     redirect_to :action => 'list'
   end
-  
+
   def update_rowers
     @event = Event.find(params[:id])
     @rowers = params[:rowers]
@@ -104,7 +99,7 @@ class EventsController < ApplicationController
     end
     if @event.update_attributes(params[:event])
       flash[:notice] = 'Rowing time was successfully updated.'
-    else 
+    else
       flash[:error] = 'An error occured while saving changes.'
     end
     redirect_to(team_summary_url(:id => @event.team))
