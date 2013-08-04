@@ -58,7 +58,7 @@
 									
 <% fields = %w(event_event_on_1i event_event_on_2i event_event_on_3i event_start_time_4i event_start_time_5i event_end_time_4i event_end_time_5i)
 	fields.each do |f| -%>
-<%= observe_field f, 
+<%#= observe_field f, 
 								:update => 'time_message', 
 								:complete => "$('time_message').setStyle({display: 'block',opacity: '1.0'});Effect.Fade('time_message', {delay: 6.0, duration: 3.0})",
 								:with => "'date='+$F('event_event_on_3i')+'-'+$F('event_event_on_2i')+'-'+$F('event_event_on_1i')+'&start='+$F('event_start_time_4i')+':'+$F('event_start_time_5i')+'&end='+$F('event_end_time_4i')+':'+$F('event_end_time_5i')",
