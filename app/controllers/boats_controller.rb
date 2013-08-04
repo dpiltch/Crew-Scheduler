@@ -51,7 +51,11 @@ class BoatsController < ApplicationController
   end
 
   def destroy
-    Boat.find(params[:id]).destroy
+    if Event.find_by_boat_id(params[:id])
+      flash[:notice] = 'That boat is (or was) scheduled to be used, so it cannot be deleted.'
+    else
+      Boat.find(params[:id]).destroy
+    end
     redirect_to :action => 'list'
   end
   
