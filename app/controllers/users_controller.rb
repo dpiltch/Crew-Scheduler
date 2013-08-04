@@ -1,24 +1,24 @@
 class UsersController < ApplicationController
-  
+
   before_filter :login_required, :except => [:rss]
   before_filter :history_is_public, :only => [:sparkline]
-  
+
   def index
     list
     render :action => 'list'
   end
-  
+
   def rss
     @user = User.find_by_login(params[:login])
     return (render :status => 404, :file => "#{RAILS_ROOT}/public/404.html") if @user.nil?
-    @upcoming = @user.upcoming 
+    @upcoming = @user.upcoming
     @title = "Upcoming Rowing for #{@user.login.capitalize}"
     @desc = "Rowing Times for the next two weeks for #{@user.login.capitalize}."
     respond_to do |format|
       format.rss { render :layout => false }
     end
   end
-  
+
   def sparkline
     if params[:id].blank?
       @user = current_user
@@ -42,7 +42,8 @@ class UsersController < ApplicationController
   end
 
   def new
-    @users = User.new
+    @user = User.new
+    @user.team = Team.find(:all).first
   end
 
   def create
@@ -73,7 +74,7 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     redirect_to :action => 'list'
   end
-  
+
   # Not used anymore to keep compatible with Heroku  -slm 04/19/2008
   def users_for_lookup
     # Look for ambis as well for now  -slm 03/14/2008
@@ -87,14 +88,14 @@ class UsersController < ApplicationController
     end
     render :layout => false
   end
-  
+
   protected
   def history_is_public
     return true if params[:id].blank?
     user = User.find(params[:id])
     user.public_rowing_history ? true : access_denied
   end
-  
+
   def access_denied
     render :text => " "
     false
