@@ -50,8 +50,8 @@ ExceptionNotification::Notifier.sender_address = %("Scheduler Error" <merrymeeti
 ExceptionNotification::Notifier.email_prefix = "[Rowbrunswick Scheduler ERROR] "
 
 ActionMailer::Base.smtp_settings = {
- :user_name => ENV['GMAIL'] || GMAIL,
- :password => ENV['GMAILPASSWD'] || GMAILPASSWD,
+ :user_name => ENV['GMAIL'],
+ :password => ENV['GMAILPASSWD'],
  :authentication => :plain,
  :address  => "smtp.gmail.com",
  :port  => 587,
