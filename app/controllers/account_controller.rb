@@ -4,7 +4,7 @@ class AccountController < ApplicationController
   # If you want "remember me" functionality, add this before_filter to Application Controller
   before_filter :login_from_cookie
   before_filter :check_if_logged_in, :only => [:reset, :login, :signup]
-  
+
   # say something nice, you goof!  something sweet.
   def index
     redirect_to(signup_url) unless logged_in? || User.count > 0
@@ -28,6 +28,7 @@ class AccountController < ApplicationController
   def signup
     @page_title = "Scheduler: Sign Up"
     @user = User.new(params[:user])
+    @user.team = Team.find(:all).first
     return unless request.post?
     if verify_recaptcha(@post)
       @user.save!
@@ -40,7 +41,7 @@ class AccountController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
   end
-  
+
   def logout
     self.current_user.forget_me if logged_in?
     # commented out because heroku does not like this  -slm 06/24/2008
@@ -49,7 +50,7 @@ class AccountController < ApplicationController
     redirect_to(login_url)
     flash[:notice] = "You have been logged out."
   end
-  
+
   def activate
     flash.clear
     @code = params[:activation_code]
@@ -60,12 +61,12 @@ class AccountController < ApplicationController
       #self.current_user = @user
       redirect_back_or_default(login_url)
       flash[:notice] = "This account has been activated. Please login."
-    else  
+    else
       redirect_back_or_default(summary_url)
       flash[:error] = "Unable to activate the account.  Perhaps the account is already activated?"
     end
   end
-  
+
   def reset
     @page_title = "Scheduler: Forgot Password"
     return unless request.post?
