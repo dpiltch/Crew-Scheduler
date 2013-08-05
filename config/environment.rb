@@ -22,6 +22,11 @@ Rails::Initializer.run do |config|
   config.active_record.observers = :user_observer, :event_observer
 
   config.time_zone = 'UTC'
+
+  env_file = File.join(Rails.root, 'config', 'local_env.yml')
+  YAML.load(File.open(env_file)).each do |key, value|
+    ENV[key.to_s] = value
+  end if File.exists?(env_file)
 end
 
 
@@ -34,25 +39,23 @@ YOURSITE = 'scheduler.rowbrunswick.org' unless defined? YOURSITE
 EVENTCALENDAR = "http://www.google.com/calendar/hosted/yarmouth-rowing.org/embed?src=scheduler%40yarmouth-rowing.org&ctz=America/New_York" unless defined? EVENTCALENDAR
 TIDECALENDAR = "http://www.google.com/calendar/hosted/yarmouth-rowing.org/embed?src=yarmouth-rowing.org_0ingqags0ib0vuutvegtjckopg%40group.calendar.google.com&ctz=America/New_York&color=%2328754E&mode=WEEK" unless defined? TIDECALENDAR
 TIDECALENDARNAME = "Tides" unless defined? TIDECALENDARNAME
-GMAIL = "merrymeeting.rowing@gmail.com" unless defined? GMAIL
-GMAILPASSWD = "nonesuch23river" unless defined? GMAILPASSWD
 
 # RSS Items
 BULLETINRSSTITLE = "Yarmouth Rowing Club Bulletins" unless defined? BULLETINRSSTITLE
 BULLETINRSSDESC = "The latest bulletins and announcements from Yarmouth Rowing Club." unless defined? BULLETINRSSDESC
 
 # Configure the exception notifier
-ExceptionNotifier.exception_recipients = %w(dpiltch@gmail.com)
-ExceptionNotifier.sender_address = %("Scheduler Error" <merrymeeting.rowing@gmail.com>)
-ExceptionNotifier.email_prefix = "[Rowbrunswick Scheduler ERROR] "
+ExceptionNotification::Notifier.exception_recipients = %w(dpiltch@gmail.com)
+ExceptionNotification::Notifier.sender_address = %("Scheduler Error" <merrymeeting.rowing@gmail.com>)
+ExceptionNotification::Notifier.email_prefix = "[Rowbrunswick Scheduler ERROR] "
 
 ActionMailer::Base.smtp_settings = {
- :user_name => GMAIL,
- :password => GMAILPASSWD,
+ :user_name => ENV['GMAIL'] || GMAIL,
+ :password => ENV['GMAILPASSWD'] || GMAILPASSWD,
  :authentication => :plain,
  :address  => "smtp.gmail.com",
  :port  => 587,
- :tls => true,
+ :enable_starttls_auto => true,
  :domain  => 'gmail.com'
 }
 

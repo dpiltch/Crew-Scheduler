@@ -7,3 +7,4 @@ config/database.yml
 db/*.sqlite3
 db/data.yml
 db/*.db
+config/local_env.yml
