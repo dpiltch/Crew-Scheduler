@@ -59,11 +59,9 @@ ActionMailer::Base.smtp_settings = {
 }
 
 if RUBY_VERSION.match('^1\.8')
-  puts "ruby 1.8 found\n"+ ActionMailer::Base.smtp_settings.inspect
-  ActionMailer::Base.smtp_settings = { :tls => true }
+  ActionMailer::Base.smtp_settings[:tls] = true
 else
-  puts "ruby 1.8 not found\n"+ ActionMailer::Base.smtp_settings.inspect
-  ActionMailer::Base.smtp_settings = { :enable_starttls_auto => true }
+  ActionMailer::Base.smtp_settings[:enable_starttls_auto] = true
 end
 
 require 'fastercsv'
