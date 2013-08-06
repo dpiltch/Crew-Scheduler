@@ -8,7 +8,7 @@
 	<%= render :partial => 'river_flow' %>
 
 </div>
-<div id="content" style="padding-left: 65px;">
+<div id="content" style="margin-left: 420px">
 	<h1>Crew Scheduler</h1>
 	<div id="bulletins">
 		<%= render :partial => 'bulletin', :collection => @bulletins %>
@@ -26,22 +26,22 @@
 	<div id="summary_schedule">
 		<div id="today">
 			<h3>Today's Rowing Summary</h3>
-			<%= "none" if @today.length == 0 %>
 			<ul class="upcoming">
+				<%= content_tag "li", "none" if @today.length == 0 %>
 				<%= render :partial => 'today', :collection => @today %>
 			</ul>
 		</div>
 		<div id="tomorrow">
 			<h3>Tomorrow's Rowing Summary</h3>
-			<%= "none" if @tomorrow.length == 0 %>
 			<ul class="upcoming">
+				<%= content_tag "li", "none" if @tomorrow.length == 0 %>
 				<%= render :partial => 'tomorrow', :collection => @tomorrow %>
 			</ul>
 		</div>
 		<div id="day_after_tomorrow">
 			<h3><%= (Date.tomorrow + 1.day).strftime("%A") %>'s Rowing Summary</h3>
-			<%= "none" if @day_after_tomorrow.length == 0 %>
 			<ul class="upcoming">
+				<%= content_tag "li", "none" if @day_after_tomorrow.length == 0 %>
 				<%= render :partial => 'day_after_tomorrow', :collection => @day_after_tomorrow %>
 			</ul>
 		</div>

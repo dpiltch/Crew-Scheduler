@@ -139,12 +139,12 @@ div#tabmenu ul {
 
 div#tabmenu ul li {
 	float: left;
-	margin: 0; 
+	margin: 0;
 	padding: 0;
 	display: inline;
 	list-style: none;
 }
-	
+
 div#tabmenu ul a:link, div#tabmenu ul a:visited {
 	float: left;
 	font-size: 105%;
@@ -210,7 +210,7 @@ div.auto_complete ul li.selected {
 	background-color: #d3f4ff;
 }
 div.auto_complete ul strong.highlight {
-	color: #800; 
+	color: #800;
 	margin:0;
 	padding:0;
 }
@@ -300,13 +300,19 @@ ul.myevents {
 	list-style: none;
 	padding-left: 3px;
 }
-ul.upcoming {
+#wanted ul,
+#summary_schedule ul{
 	list-style: none;
-	padding-left: 8px;
+	margin-bottom: 24px;
+  padding-left: 8px;
+	font-size: smaller;
 }
 .myevents li, .upcoming li {
 	margin: 6px 0;
 	line-height: 1em;
+}
+#seats-needed {
+	font-weight: bold;
 }
 div#boat_detail {
 	min-height: 100px;

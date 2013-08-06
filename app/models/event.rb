@@ -3,9 +3,9 @@ class Event < ActiveRecord::Base
   has_many :users, :through => :seating_positions
   belongs_to :team
   belongs_to :boat
-  
+
   validates_presence_of :boat_id
-  
+
   def is_on?
     max_rowers = 1
     if (self.boat)
@@ -18,24 +18,24 @@ class Event < ActiveRecord::Base
     coach = !self.needs_coach?
     rowers && coxswain && coach
   end
-  
+
   def needs_coxswain?
     return true if self.team.nil?
     (self.team.require_cox && (self.coxswain.nil? || self.coxswain == ""))
   end
-  
+
   def needs_coach?
     return true if self.team.nil?
     (self.team.require_coach && (self.coach.nil? || self.coach == ""))
   end
-  
+
   def within_time_limit?
     day = self.event_on.strftime("%Y-%m-%d")
     hour = self.start_time.strftime("%H:%M")
     event_time = Time.parse("#{day} #{hour}")
     event_time <= (Time.now + 20.hour)
   end
-  
+
   def self.today
     times = []
     events = find :all, :conditions => { :event_on => Date.today }, :order => "start_time"
@@ -44,7 +44,7 @@ class Event < ActiveRecord::Base
     end
     return times
   end
-  
+
   def self.tomorrow
     times = []
     events = find :all, :conditions => { :event_on => Date.tomorrow }, :order => "start_time"
@@ -53,7 +53,7 @@ class Event < ActiveRecord::Base
     end
     return times
   end
-  
+
   def self.day_after_tomorrow
     times = []
     events = find :all, :conditions => { :event_on => (Date.tomorrow + 1.day) }, :order => "start_time"
@@ -62,16 +62,16 @@ class Event < ActiveRecord::Base
     end
     return times
   end
-  
+
   def self.needed
     needed = []
-    events = find :all, :conditions => ["event_on >= ? AND event_on < ?", Date.today, (Date.today + 4.days)], :order => "event_on"
+    events = find :all, :conditions => ["event_on >= ? AND event_on < ?", Date.today, (Date.today + 14.days)], :order => "event_on"
     events.each do |event|
       needed << event if (!event.is_on? && !event.within_time_limit?)
     end
-    return needed    
+    return needed
   end
-  
+
   def self.daily_notify
     events = Event.tomorrow
     events.each do |event|
@@ -87,7 +87,7 @@ class Event < ActiveRecord::Base
       EventNotifier.deliver_reminder(event, recipients) unless recipients.blank?
     end
   end
-  
+
   def self.check_start(date, start_time)
     #date = time.strftime("%Y-%m-%d")
     #start = time.strftime("%H:%M")
@@ -100,17 +100,17 @@ class Event < ActiveRecord::Base
     return [nil] unless events.size > 1
     ["#{events.size} crews are launching at the same time"]
   end
-  
+
   def team_name
     return self.team.name unless team.nil?
     "Unknown"
   end
-  
+
   def boat_name
     return self.boat.name unless boat.nil?
     "Unknown"
   end
-  
+
   def rowers
     @rowers = Hash.new
     self.seating_positions.each do |seat|
@@ -123,39 +123,39 @@ class Event < ActiveRecord::Base
     end
     @rowers
   end
-  
+
   def start_hour_min
     self.start_time.strftime("%H:%M")
   end
-  
+
   def end_hour_min
     self.end_time.strftime("%H:%M")
   end
-  
+
   def coach_email
     return nil if (u = User.find(:first, :conditions => { :login => self.coach })).nil?
-    nil || (u.email) unless (self.coach.nil? || self.coach == "") 
+    nil || (u.email) unless (self.coach.nil? || self.coach == "")
   end
-  
+
   def coxswain_email
     return nil if (u = User.find(:first, :conditions => { :login => self.coxswain })).nil?
     nil || (u.email) unless (!self.boat.has_coxswain? || self.coxswain.nil? || self.coxswain == "")
   end
-  
+
   def rowers_email
     self.users.collect { |u| u.email }
   end
-  
+
   def coxswain_name
     return "none" if (self.coxswain.nil? || self.coxswain =="")
     self.coxswain
   end
-  
+
   def coach_name
     return "none" if (self.coach.nil? || self.coach =="")
     self.coach
   end
-  
+
   def find_rower_seat(rower)
     seat = self.seating_positions.find_by_user_id(rower)
     seat.nil? ? seat : seat.position
