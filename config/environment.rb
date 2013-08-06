@@ -39,6 +39,7 @@ YOURSITE = 'scheduler.rowbrunswick.org' unless defined? YOURSITE
 EVENTCALENDAR = "http://www.google.com/calendar/hosted/yarmouth-rowing.org/embed?src=scheduler%40yarmouth-rowing.org&ctz=America/New_York" unless defined? EVENTCALENDAR
 TIDECALENDAR = "http://www.google.com/calendar/hosted/yarmouth-rowing.org/embed?src=yarmouth-rowing.org_0ingqags0ib0vuutvegtjckopg%40group.calendar.google.com&ctz=America/New_York&color=%2328754E&mode=WEEK" unless defined? TIDECALENDAR
 TIDECALENDARNAME = "Tides" unless defined? TIDECALENDARNAME
+RIVER_FLOW_DETAILS = "http://waterdata.usgs.gov/usa/nwis/uv?site_no=01059000"
 
 # RSS Items
 BULLETINRSSTITLE = "Yarmouth Rowing Club Bulletins" unless defined? BULLETINRSSTITLE

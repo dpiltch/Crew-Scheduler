@@ -1,17 +1,12 @@
-<div id="left_sidebar" style="width: 260px;">
+<div id="left_sidebar" style="width: 400px;">
 	<h4>Next Rowing <%= link_to (image_tag "feed-icon-small.png", :alt => "RSS feed", :title => "Click to Subscribe...", :border => 0), user_rss_url(:login => current_user.login) %></h3>
 		<ul class="myevents">
 		<%= "<li>none</li>" if @myevents.length == 0 %>
 		<%= render :partial => 'myevent', :collection => @myevents %>
 		</ul>
 	<hr />
-	<h4>Tides</h4>
-	<ul id="tide_summary">
-		<%= render :partial => 'shared/tide', :collection => @tides, :locals => {:show_date => false} %>
-	</ul>
-	<%= render :partial => 'shared/tide_calendar' %>
-	<br />
-	<%= render :partial => 'calendar' %>
+	<%= render :partial => 'river_flow' %>
+
 </div>
 <div id="content" style="padding-left: 65px;">
 	<h1>Crew Scheduler</h1>

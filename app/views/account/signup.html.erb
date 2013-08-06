@@ -15,10 +15,10 @@
 		<%= image_tag("ambi.png", :size => "35x35", :title=>"either") %> <%= radio_button("user", "side", "ambi", :class =>"radio") %>
 	</div>
 
-	<p><label for="user_will_cox">Willing to be a coxswain</label> 
+	<p><label for="user_will_cox">Willing to be a coxswain</label>
 	<%= check_box 'user', 'will_cox'  %></p>
 
-	<p><label for="user_will_coach">Willing to Coach</label> 
+	<p><label for="user_will_coach">Willing to Coach</label>
 	<%= check_box 'user', 'will_coach'  %></p>
 
 	<p><label for="password">Password</label><br/>
@@ -35,6 +35,6 @@
 
 	<p><%= submit_tag 'Sign up', :class => "signupbutton right" %></p>
 	<% end -%>
-	
+
 	<%= link_to 'cancel', login_url %>
 </div>
