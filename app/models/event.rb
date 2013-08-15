@@ -33,7 +33,7 @@ class Event < ActiveRecord::Base
     day = self.event_on.strftime("%Y-%m-%d")
     hour = self.start_time.strftime("%H:%M")
     event_time = Time.parse("#{day} #{hour}")
-    event_time <= (Time.now + 20.hour)
+    event_time <= (Time.now + 2.hour)
   end
 
   def self.today
